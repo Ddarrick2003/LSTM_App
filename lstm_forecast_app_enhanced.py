@@ -21,6 +21,12 @@ if uploaded_file:
     scaled_data = scaler.fit_transform(df["Close"].values.reshape(-1, 1))
 
     seq_length = 60
+
+    # Check if data is long enough
+    if len(scaled_data) <= seq_length:
+        st.error(f"Your dataset is too short. At least {seq_length + 1} rows are required, but you only provided {len(scaled_data)}.")
+        st.stop()
+
     X, y = [], []
     for i in range(seq_length, len(scaled_data)):
         X.append(scaled_data[i-seq_length:i, 0])
